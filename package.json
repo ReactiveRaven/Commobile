@@ -11,6 +11,9 @@
     "gulp-sass": "^0.7.1",
     "gulp-util": "^2.2.14",
     "karma": "^0.12.24",
+    "karma-jasmine": "*",
+    "karma-phantomjs-launcher": "*",
+    "karma-junit-reporter": "*",
     "shelljs": "^0.3.0"
   },
   "scripts": {
