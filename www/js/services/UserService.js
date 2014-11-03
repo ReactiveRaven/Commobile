@@ -1,7 +1,12 @@
 angular.module('commobile.service.user', [])
-    .factory("UserService", function($http) {
-        return {
+    .factory("UserService", function($http, $q) {
+        var token,
+            UserService;
+    
+        UserService = {
             login: function() {
+                var deferred = $q.defer();
+                
                 $http({
                     url: "/login",
                     method: "POST",
@@ -9,7 +14,10 @@ angular.module('commobile.service.user', [])
                         username: null,
                         password: null
                     }
+                }).success(function(data) {
+                    UserService.setToken(data.token);
                 });
+                return deferred.promise;
             },
             getToken: function() {
                 return token;
@@ -19,4 +27,6 @@ angular.module('commobile.service.user', [])
                 return this;
             }
         };
+    
+        return UserService;
     });
