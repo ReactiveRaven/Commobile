@@ -9,7 +9,6 @@ module.exports = function(config) {
       "lib/angular-animate/angular-animate.js",
       "lib/angular-sanitize/angular-sanitize.min.js",
       "lib/angular-ui-router/release/angular-ui-router.js",
-      "lib/angular-resource/angular-resource.min.js",
       "lib/ng-modular-log/ngModularLog.js",
       "lib/ionic/js/ionic.js",
       "lib/ionic/js/ionic-angular.js",
