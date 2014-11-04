@@ -10,16 +10,20 @@
     "gulp-rename": "^1.2.0",
     "gulp-sass": "^0.7.1",
     "gulp-util": "^2.2.14",
+    "jscs": "^1.7.3",
+    "jshint": "^2.5.8",
     "karma": "^0.12.24",
     "karma-jasmine": "*",
-    "karma-phantomjs-launcher": "*",
     "karma-junit-reporter": "*",
+    "karma-phantomjs-launcher": "*",
     "shelljs": "^0.3.0"
   },
   "scripts": {
     "bower": "node_modules/bower/bin/bower install",
     "install": "npm run bower",
-    "test": "npm run karma",
+    "test": "{ npm run jshint && npm run jscs && npm run karma; } 2>/dev/null",
+    "jscs": "node_modules/jscs/bin/jscs www/js/**/*.js",
+    "jshint": "node_modules/jshint/bin/jshint www/js/**/*.js",
     "karma": "node_modules/karma/bin/karma start test/karma.conf.js --single-run",
     "watch-karma": "node_modules/karma/bin/karma start test/karma.conf.js"
   }
