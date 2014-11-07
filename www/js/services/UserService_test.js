@@ -148,4 +148,17 @@ describe("UserService", function() {
         });
 
     });
+
+    describe("logout()", function() {
+        it("should be a function", function() {
+            expect(typeof UserService.logout).toBe("function");
+        });
+
+        it("should clear the token", function() {
+            var token = "token";
+            UserService.setToken(token);
+            UserService.logout();
+            expect(UserService.getToken()).toBe(null);
+        });
+    });
 });

@@ -22,6 +22,9 @@ angular.module("commobile.service.user", [])
                 });
                 return deferred.promise;
             },
+            logout: function() {
+                UserService.setToken(null);
+            },
             getToken: function() {
                 return token;
             },
