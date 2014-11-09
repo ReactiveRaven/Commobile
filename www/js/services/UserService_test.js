@@ -1,11 +1,35 @@
 describe("UserService", function() {
 
-    var UserService;
+    var UserService,
+        API_HOST,
+        URL_SESSION,
+        $httpBackend,
+        fakeDeets = {
+            username: "john",
+            password: "swordfish"
+        },
+        fakeContext = {
+            ok: true,
+            userCtx: {
+                name: "john",
+                roles: []
+            }
+        };
+        token = "DEADBEEFCA7";
 
     beforeEach(function() {
         module("aa.commobile.service.user");
-        inject(function(_UserService_) {
+        inject(function(_UserService_, _API_HOST_, _URL_SESSION_, _$httpBackend_) {
             UserService = _UserService_;
+            API_HOST = _API_HOST_;
+            URL_SESSION = _URL_SESSION_;
+            $httpBackend = _$httpBackend_;
+            $httpBackend.when("get", URL_SESSION)
+                .respond({ ok: true }, { "Set-Cookie": "AuthSession=" + token });
+            $httpBackend.when("POST", URL_SESSION)
+                .respond({ ok: true }, { "Set-Cookie": "AuthSession=" + token });
+            $httpBackend.when("DELETE", API_HOST + URL_SESSION)
+                .respond({ ok: true });
         });
     });
 
@@ -26,51 +50,15 @@ describe("UserService", function() {
         });
     });
 
-    describe("setToken", function() {
-        it("should be a function", function() {
-            expect(typeof UserService.setToken).toBe("function");
-        });
-
-        it("should set the token", function() {
-            var token = "pizza pie";
-            UserService.setToken(token);
-            expect(UserService.getToken()).toBe(token);
-        });
-
-        it("should return UserService", function() {
-            expect(UserService.setToken(null)).toBe(UserService);
-        });
-    });
-
-    describe("getToken", function() {
-        it("should be a function", function() {
-            expect(typeof UserService.getToken).toBe("function");
-        });
-
-        it("should return the token", function() {
-            var token = "TESTING";
-            UserService.setToken(token);
-            expect(UserService.getToken()).toBe(token);
+    describe("policies:", function() {
+        it("no 'token' functions", function() {
+            expect(Object.keys(UserService).filter(function(key) {
+                return (key + "").toLowerCase().indexOf("token") > -1;
+            }).length).toBe(0);
         });
     });
 
     describe("login()", function() {
-
-        var $httpBackend,
-            fakeDeets = {
-                username: "john",
-                password: "swordfish"
-            },
-            fakeUser = {
-                userid: 42,
-                token: "DEADBEEFCA7"
-            };
-
-        beforeEach(inject(function(_$httpBackend_) {
-            $httpBackend = _$httpBackend_;
-            $httpBackend.when("POST", "/login")
-                .respond(fakeUser);
-        }));
 
         afterEach(function() {
             $httpBackend.verifyNoOutstandingExpectation();
@@ -82,24 +70,18 @@ describe("UserService", function() {
         });
 
         it("should call the login endpoint", function() {
-            $httpBackend.expectPOST("/login");
+            $httpBackend.expectPOST(API_HOST + URL_SESSION);
             UserService.login();
             $httpBackend.flush();
         });
 
         it("should post the username and password to the server", function() {
-            $httpBackend.expectPOST("/login", fakeDeets);
+            $httpBackend.expectPOST(URL_SESSION, fakeDeets);
             UserService.login(fakeDeets.username, fakeDeets.password);
             $httpBackend.flush();
         });
 
         describe("Successful", function() {
-            it("should set token to match returned token", function() {
-                UserService.login();
-                $httpBackend.flush();
-                expect(UserService.getToken()).toBe(fakeUser.token);
-            });
-
             it("should return a promise", function() {
                 var result = UserService.login();
                 expect(typeof result).toBe("object");
@@ -121,16 +103,7 @@ describe("UserService", function() {
 
         describe("Unsuccessful", function() {
             beforeEach(function() {
-                $httpBackend.expectPOST("/login").respond(401);
-            });
-
-            it("should not change the token", function() {
-                var token = "Test Token";
-
-                UserService.setToken(token);
-                UserService.login();
-                $httpBackend.flush();
-                expect(UserService.getToken()).toBe(token);
+                $httpBackend.expectPOST(API_HOST + URL_SESSION).respond(401);
             });
 
             it("should reject promise on server error", function() {
@@ -150,15 +123,90 @@ describe("UserService", function() {
     });
 
     describe("logout()", function() {
+
         it("should be a function", function() {
             expect(typeof UserService.logout).toBe("function");
         });
 
-        it("should clear the token", function() {
-            var token = "token";
-            UserService.setToken(token);
-            UserService.logout();
-            expect(UserService.getToken()).toBe(null);
+        it("should return a promise", function() {
+            var response = UserService.logout();
+            expect(typeof response).toBe("object");
+            expect(typeof response.then).toBe("function");
         });
+
+        it("should hit the logout endpoint to invalidate the token", function() {
+            $httpBackend.expectDELETE(API_HOST + URL_SESSION);
+            UserService.logout();
+            $httpBackend.flush();
+        });
+
+        it("should resolve the promise on server response", function() {
+            var flag;
+            UserService.logout().then(
+                function() { flag = "resolved"; },
+                function() { flag = "rejected"; }
+            );
+            expect(flag).toBeUndefined();
+            $httpBackend.flush();
+            expect(flag).toBe("resolved");
+        });
+
+        it("should reject the promise on server error", function() {
+            var flag;
+            $httpBackend.expectDELETE(API_HOST + URL_SESSION).respond(401);
+            UserService.logout().then(
+                function() { flag = "resolved"; },
+                function() { flag = "rejected"; }
+            );
+            expect(flag).toBeUndefined();
+            $httpBackend.flush();
+            expect(flag).toBe("rejected");
+        });
+    });
+
+    describe("getContext", function() {
+
+        it("should be a function", function() {
+            expect(typeof UserService.getContext).toBe("function");
+        });
+
+        it("should return a promise", function() {
+            var result = UserService.getContext();
+            expect(typeof result).toBe("object");
+            expect(typeof result.then).toBe("function");
+        });
+
+        it("should call to session endpoint", function() {
+            $httpBackend.expectGET(API_HOST + URL_SESSION);
+            UserService.getContext();
+            $httpBackend.flush();
+        });
+
+        it("should resolve with the user context on server response", function() {
+            var flag;
+            UserService.getContext().then(function(result) {
+                flag = result;
+            });
+            expect(flag).toBeUndefined();
+            $httpBackend.flush();
+            expect(flag).toEqual(fakeContext.userCtx);
+        });
+    });
+
+    ddescribe("getUsername", function() {
+        beforeEach(function() {
+            spyOn(UserService, "getContext").andReturn(resolved(fakeContext.userCtx));
+        });
+
+        it("should be a function", function() {
+            expect(typeof UserService.getUsername).toBe("function");
+        });
+
+        it("should call through to getContext", function() {
+            UserService.getUsername();
+            expect(UserService.getContext).toHaveBeenCalled();
+        });
+
+        iit("should return the ");
     });
 });

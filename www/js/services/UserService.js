@@ -1,5 +1,5 @@
-angular.module("aa.commobile.service.user", [])
-    .factory("UserService", function($http, $q) {
+angular.module("aa.commobile.service.user", [ "aa.commobile.constants" ])
+    .factory("UserService", function($http, $q, API_HOST, URL_SESSION) {
         var token,
             UserService;
 
@@ -8,14 +8,13 @@ angular.module("aa.commobile.service.user", [])
                 var deferred = $q.defer();
 
                 $http({
-                    url: "/login",
+                    url: API_HOST + URL_SESSION,
                     method: "POST",
                     data: {
                         username: username,
                         password: password
                     }
                 }).success(function(data) {
-                    UserService.setToken(data.token);
                     deferred.resolve();
                 }).error(function() {
                     deferred.reject();
@@ -23,14 +22,10 @@ angular.module("aa.commobile.service.user", [])
                 return deferred.promise;
             },
             logout: function() {
-                UserService.setToken(null);
-            },
-            getToken: function() {
-                return token;
-            },
-            setToken: function(newToken) {
-                token = newToken;
-                return this;
+                return $http({
+                    url: API_HOST + URL_SESSION,
+                    method: "DELETE"
+                });
             }
         };
 

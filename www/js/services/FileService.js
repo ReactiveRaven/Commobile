@@ -9,7 +9,7 @@ angular.module(
 
         FileService = {
             ls: function() {
-                
+
             }
         };
 

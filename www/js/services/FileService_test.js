@@ -4,7 +4,7 @@ describe("FileService", function() {
         API_HOST,
         URL_FILE,
         fakeLsResponse;
-    
+
     beforeEach(function() {
         module("aa.commobile.service.file");
         inject(
@@ -42,31 +42,31 @@ describe("FileService", function() {
             ]
         };
     });
-    
+
     describe("ls", function() {
-        
+
         beforeEach(function() {
             $httpBackend.when("GET", API_HOST + URL_FILE).respond();
         });
-        
+
         it("should be a function", function() {
             expect(typeof FileService.ls).toBe("function");
         });
-        
+
         it("should return a promise", function() {
             var response = FileService.ls();
-            
+
             expect(typeof response).toBe("object");
             expect(typeof response.then).toBe("function");
         });
-        
+
         it("should pull from the server", function() {
             $httpBackend.expectGET(API_HOST + URL_FILE);
-            
+
             FileService.ls();
             $httpBackend.flush();
         });
-        
+
         it("should accept a folder name to send to the server", function() {
             var dirname = "/fish/and/chips",
                 encodedDirname = encodeURIComponent(dirname);
@@ -82,7 +82,7 @@ describe("FileService", function() {
     describe("getInfo", function() {
         var testFileId = "test-file-id",
             fakeLsResponse;
-        
+
         beforeEach(function() {
             fakeGetInfoResponse = {
                 "_id": "biking",
@@ -120,9 +120,9 @@ describe("FileService", function() {
             FileService.getInfo(testFileId);
             $httpBackend.flush();
         });
-        
+
         it("should resolve with the document information", function() {
-            
+
         });
     });
 });
