@@ -1,4 +1,4 @@
-angular.module("commobile.service.user", [])
+angular.module("aa.commobile.service.user", [])
     .factory("UserService", function($http, $q) {
         var token,
             UserService;

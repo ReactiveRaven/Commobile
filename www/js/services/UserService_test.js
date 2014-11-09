@@ -3,7 +3,7 @@ describe("UserService", function() {
     var UserService;
 
     beforeEach(function() {
-        module("commobile.service.user");
+        module("aa.commobile.service.user");
         inject(function(_UserService_) {
             UserService = _UserService_;
         });

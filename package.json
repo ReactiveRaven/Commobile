@@ -25,6 +25,7 @@
     "jscs": "node_modules/jscs/bin/jscs www/js/**/*.js",
     "jshint": "node_modules/jshint/bin/jshint www/js/**/*.js",
     "karma": "node_modules/karma/bin/karma start test/karma.conf.js --single-run --no-color",
-    "watch-karma": "node_modules/karma/bin/karma start test/karma.conf.js"
+    "watch-karma": "node_modules/karma/bin/karma start test/karma.conf.js",
+    "test-nokarma": "{ npm run jshint && npm run jscs; } 2>/dev/null"
   }
 }
