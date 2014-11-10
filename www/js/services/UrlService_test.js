@@ -30,8 +30,7 @@ describe("aa.commobile.service.url", function() {
                 expected = "/user/johnsmith",
                 flag;
 
-            UserService.getUserName = jasmine.createSpy("getUserName");
-            UserService.getUserName.andReturn(resolved("johnsmith"));
+            spyOn(UserService, "getUsername").and.returnValue(resolved("johnsmith"));
 
             UrlService.render(replaceable).then(function(result) {
                 flag = result;

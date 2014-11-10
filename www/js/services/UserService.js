@@ -21,6 +21,25 @@ angular.module("aa.commobile.service.user", [ "aa.commobile.constants" ])
                 });
                 return deferred.promise;
             },
+            getContext: function() {
+                var deferred = $q.defer();
+                
+                $http({
+                    url: API_HOST + URL_SESSION,
+                    method: "GET"
+                }).success(function(data) {
+                    deferred.resolve(data.userCtx);
+                }).error(function() {
+                    deferred.reject();
+                });
+                
+                return deferred.promise;
+            },
+            getUsername: function() {
+                return UserService.getContext().then(function(data) {
+                    return data.userCtx.name;
+                });
+            },
             logout: function() {
                 return $http({
                     url: API_HOST + URL_SESSION,

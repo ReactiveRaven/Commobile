@@ -14,7 +14,7 @@ describe("UserService", function() {
                 name: "john",
                 roles: []
             }
-        };
+        },
         token = "DEADBEEFCA7";
 
     beforeEach(function() {
@@ -59,6 +59,10 @@ describe("UserService", function() {
     });
 
     describe("login()", function() {
+        
+        beforeEach(function() {
+            $httpBackend.when("POST", API_HOST + URL_SESSION).respond(200);
+        });
 
         afterEach(function() {
             $httpBackend.verifyNoOutstandingExpectation();
@@ -76,7 +80,7 @@ describe("UserService", function() {
         });
 
         it("should post the username and password to the server", function() {
-            $httpBackend.expectPOST(URL_SESSION, fakeDeets);
+            $httpBackend.expectPOST(API_HOST + URL_SESSION, fakeDeets);
             UserService.login(fakeDeets.username, fakeDeets.password);
             $httpBackend.flush();
         });
@@ -165,6 +169,10 @@ describe("UserService", function() {
     });
 
     describe("getContext", function() {
+        
+        beforeEach(function() {
+            $httpBackend.when("GET", API_HOST + URL_SESSION).respond(fakeContext);
+        });
 
         it("should be a function", function() {
             expect(typeof UserService.getContext).toBe("function");
@@ -193,9 +201,10 @@ describe("UserService", function() {
         });
     });
 
-    ddescribe("getUsername", function() {
+    describe("getUsername", function() {
         beforeEach(function() {
-            spyOn(UserService, "getContext").andReturn(resolved(fakeContext.userCtx));
+            var x = resolved(fakeContext);
+            spyOn(UserService, "getContext").and.returnValue(x);
         });
 
         it("should be a function", function() {
@@ -207,6 +216,14 @@ describe("UserService", function() {
             expect(UserService.getContext).toHaveBeenCalled();
         });
 
-        iit("should return the ");
+        it("should return the username from the context object", function() {
+            var flag = null;
+            UserService.getUsername().then(function(result) {
+                flag = result;
+            });
+            expect(flag).toBe(null);
+            digest();
+            expect(flag).toBe(fakeContext.userCtx.name);
+        });
     });
 });
