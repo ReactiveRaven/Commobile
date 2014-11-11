@@ -26,8 +26,8 @@ describe("aa.commobile.service.url", function() {
         });
 
         it("should pull values from other services to replace placeholders", function() {
-            var replaceable = "/user/{{ UserService.getUserName }}",
-                expected = "/user/johnsmith",
+            var replaceable = "/user/{{ UserService.getUsername }}/{{ UserService.getUsername }}",
+                expected = "/user/johnsmith/johnsmith",
                 flag;
 
             spyOn(UserService, "getUsername").and.returnValue(resolved("johnsmith"));
@@ -39,6 +39,19 @@ describe("aa.commobile.service.url", function() {
             digest();
 
             expect(flag).toBe(expected);
+        });
+
+        it("should throw an exception on unrecognised tokens", function() {
+            var replaceable = "/user/{{ NotAService.NotAFunction }}/{{ UserService.getUsername }}",
+                flag;
+
+            try {
+                UrlService.render(replaceable);
+            } catch (e) {
+                flag = true;
+            }
+
+            expect(flag).toBe(true);
         });
     });
 });
