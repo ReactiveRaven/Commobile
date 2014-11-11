@@ -1,5 +1,6 @@
 describe("FileService", function() {
     var FileService,
+        UrlService,
         $httpBackend,
         API_HOST,
         URL_FILE,
@@ -9,15 +10,17 @@ describe("FileService", function() {
         module("aa.commobile.service.file");
         inject(
             function(
-                _FileService_, _$httpBackend_,
+                _FileService_, _$httpBackend_, _UrlService_,
                 _API_HOST_, _URL_FILE_
             ) {
                 FileService = _FileService_;
                 $httpBackend = _$httpBackend_;
+                UrlService = _UrlService_;
                 API_HOST = _API_HOST_;
                 URL_FILE = _URL_FILE_;
             }
         );
+        spyOn(UrlService, "render").and.returnValue(resolved("RENDERED_URL"));
         fakeLsResponse = {
             "total_rows": 3,
             "offset": 0,
@@ -59,9 +62,14 @@ describe("FileService", function() {
             expect(typeof response).toBe("object");
             expect(typeof response.then).toBe("function");
         });
+        
+        it("should render the url with UrlService", function() {
+            FileService.ls();
+            expect(UrlService.render).toHaveBeenCalled();
+        });
 
         it("should pull from the server", function() {
-            $httpBackend.expectGET(API_HOST + URL_FILE);
+            $httpBackend.expectGET("RENDERED_URL");
 
             FileService.ls();
             $httpBackend.flush();
@@ -69,10 +77,11 @@ describe("FileService", function() {
 
         it("should accept a folder name to send to the server", function() {
             var dirname = "/fish/and/chips",
-                encodedDirname = encodeURIComponent(dirname);
+                encodedDirname = encodeURIComponent(dirname),
+                renderedUrl = "RENDERED_URL";
             $httpBackend.expect(
                 "GET",
-                API_HOST + URL_FILE + "?firstKey=" + encodedDirname + "&lastKey=" + encodedDirname
+                "RENDERED_URL?firstKey=" + encodedDirname + "&lastKey=" + encodedDirname
             );
             FileService.ls(dirname);
             $httpBackend.flush();
@@ -114,9 +123,14 @@ describe("FileService", function() {
             expect(typeof response).toBe("object");
             expect(typeof response.then).toBe("function");
         });
+        
+        it("should render the url with UrlService", function() {
+            FileService.getInfo(testFileId);
+            expect(UrlService.render).toHaveBeenCalled();
+        });
 
         it("should query the server for information", function() {
-            $httpBackend.expect("GET", API_HOST + URL_FILE + "/" + testFileId);
+            $httpBackend.expect("GET", "RENDERED_URL/" + testFileId);
             FileService.getInfo(testFileId);
             $httpBackend.flush();
         });
