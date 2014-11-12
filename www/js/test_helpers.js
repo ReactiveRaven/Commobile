@@ -7,6 +7,15 @@ function _getQ() {
     return $q;
 }
 
+function _getHttpBackend() {
+    var $httpBackend;
+    inject(function(_$httpBackend_) {
+        $httpBackend = _$httpBackend_;
+    });
+    
+    return $httpBackend;
+}
+
 function _getRootScope() {
     var $rootScope;
     inject(function(_$rootScope_) {

@@ -59,7 +59,7 @@ describe("UserService", function() {
     });
 
     describe("login()", function() {
-        
+
         beforeEach(function() {
             $httpBackend.when("POST", API_HOST + URL_SESSION).respond(200);
         });
@@ -169,7 +169,7 @@ describe("UserService", function() {
     });
 
     describe("getContext", function() {
-        
+
         beforeEach(function() {
             $httpBackend.when("GET", API_HOST + URL_SESSION).respond(fakeContext);
         });

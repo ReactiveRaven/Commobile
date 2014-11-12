@@ -23,7 +23,7 @@ angular.module("aa.commobile.service.user", [ "aa.commobile.constants" ])
             },
             getContext: function() {
                 var deferred = $q.defer();
-                
+
                 $http({
                     url: API_HOST + URL_SESSION,
                     method: "GET"
@@ -32,7 +32,7 @@ angular.module("aa.commobile.service.user", [ "aa.commobile.constants" ])
                 }).error(function() {
                     deferred.reject();
                 });
-                
+
                 return deferred.promise;
             },
             getUsername: function() {

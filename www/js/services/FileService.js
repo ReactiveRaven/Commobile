@@ -15,27 +15,39 @@ angular.module(
             var FileService;
 
             FileService = {
-                ls: function() {
-                    var deferred = $q.defer();
+                ls: function(folder) {
+                    var params = {};
 
-                    UrlService.render(API_HOST + URL_FILE).then(function(renderedUrl) {
-                        $http.get(renderedUrl).success(
-                            
-                        );
-                    })
-
-                    return deferred.promise;
-                },
-                getInfo: function(filename) {
-                    var deferred = $q.defer();
-
-                    if (!filename) {
-                        throw "FileService.getInfo requires a filename to get information on";
+                    if (folder) {
+                        params.firstKey = folder;
+                        params.lastKey = folder;
                     }
 
+                    return UrlService.render(API_HOST + URL_FILE).then(function(renderedUrl) {
+                        return $http.get(
+                            renderedUrl,
+                            {
+                                params: params
+                            }
+                        ).then(
+                            function(result) {
+                                return result.data;
+                            }
+                        );
+                    });
+                },
+                getInfo: function(id) {
+                    if (!id) {
+                        throw "FileService.getInfo requires a id to get information on";
+                    }
 
-
-                    return deferred.promise;
+                    return UrlService.render(API_HOST + URL_FILE).then(function(renderedUrl) {
+                        return $http.get(
+                            renderedUrl + "/" + id
+                        ).then(function(result) {
+                            return result.data;
+                        });
+                    });
                 }
             };
 

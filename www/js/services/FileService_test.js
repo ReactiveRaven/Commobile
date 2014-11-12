@@ -21,6 +21,7 @@ describe("FileService", function() {
             }
         );
         spyOn(UrlService, "render").and.returnValue(resolved("RENDERED_URL"));
+        $httpBackend.when("GET", "RENDERED_URL").respond(resolved(fakeLsResponse));
         fakeLsResponse = {
             "total_rows": 3,
             "offset": 0,
@@ -30,13 +31,11 @@ describe("FileService", function() {
                     "id": "hello-world",
                     "value": "Hello World"
                 },
-
                 {
                     "key": "2009/01/30 18:04:11",
                     "id": "biking",
                     "value": "Biking"
                 },
-
                 {
                     "key": "2009/02/17 21:13:39",
                     "id": "bought-a-cat",
@@ -48,10 +47,6 @@ describe("FileService", function() {
 
     describe("ls", function() {
 
-        beforeEach(function() {
-            $httpBackend.when("GET", API_HOST + URL_FILE).respond();
-        });
-
         it("should be a function", function() {
             expect(typeof FileService.ls).toBe("function");
         });
@@ -62,15 +57,14 @@ describe("FileService", function() {
             expect(typeof response).toBe("object");
             expect(typeof response.then).toBe("function");
         });
-        
+
         it("should render the url with UrlService", function() {
             FileService.ls();
             expect(UrlService.render).toHaveBeenCalled();
         });
 
         it("should pull from the server", function() {
-            $httpBackend.expectGET("RENDERED_URL");
-
+            $httpBackend.expectGET("RENDERED_URL").respond(resolved(fakeLsResponse));
             FileService.ls();
             $httpBackend.flush();
         });
@@ -78,13 +72,15 @@ describe("FileService", function() {
         it("should accept a folder name to send to the server", function() {
             var dirname = "/fish/and/chips",
                 encodedDirname = encodeURIComponent(dirname),
-                renderedUrl = "RENDERED_URL";
+                renderedUrl = "RENDERED_URL",
+                fullUrl = "RENDERED_URL?firstKey=" + encodedDirname + "&lastKey=" + encodedDirname;
+
             $httpBackend.expect(
                 "GET",
-                "RENDERED_URL?firstKey=" + encodedDirname + "&lastKey=" + encodedDirname
-            );
+                fullUrl
+            ).respond(resolved(fakeLsResponse));
             FileService.ls(dirname);
-            $httpBackend.flush();
+            flush();
         });
     });
 
@@ -101,6 +97,8 @@ describe("FileService", function() {
                 "body": "My biggest hobby is mountainbiking. The other day...",
                 "date": "2009/01/30 18:04:11"
             };
+            $httpBackend.whenGET("RENDERED_URL/" + testFileId)
+                .respond(resolved(fakeGetInfoResponse));
         });
 
         it("should be a function", function() {
@@ -123,14 +121,17 @@ describe("FileService", function() {
             expect(typeof response).toBe("object");
             expect(typeof response.then).toBe("function");
         });
-        
+
         it("should render the url with UrlService", function() {
             FileService.getInfo(testFileId);
+            digest();
+            flush();
             expect(UrlService.render).toHaveBeenCalled();
         });
 
         it("should query the server for information", function() {
-            $httpBackend.expect("GET", "RENDERED_URL/" + testFileId);
+            $httpBackend.expect("GET", "RENDERED_URL/" + testFileId)
+                .respond(resolved(fakeGetInfoResponse));
             FileService.getInfo(testFileId);
             $httpBackend.flush();
         });
