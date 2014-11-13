@@ -1,4 +1,4 @@
 Commobile
 =========
 
-[![Build Status](https://travis-ci.org/ReactiveRaven/Commobile.svg?branch=master)](https://travis-ci.org/ReactiveRaven/Commobile)
+[![Build Status](https://travis-ci.org/ReactiveRaven/Commobile.svg?branch=development)](https://travis-ci.org/ReactiveRaven/Commobile)
