@@ -62,7 +62,7 @@ describe("FileService", function() {
             FileService.ls();
             expect(UrlService.render).toHaveBeenCalled();
         });
-        
+
         it("should default to '/' if no folder given", function() {
             var dirname = "/",
                 encodedDirname = encodeURIComponent(dirname),
@@ -74,7 +74,7 @@ describe("FileService", function() {
                 fullUrl
             ).respond(resolved(fakeLsResponse));
             FileService.ls();
-            flush();            
+            flush();
         });
 
         it("should accept a folder name to send to the server", function() {
@@ -90,7 +90,7 @@ describe("FileService", function() {
             FileService.ls(dirname);
             flush();
         });
-        
+
         it("should reject on server error", function() {
             var flag = null;
 
@@ -165,7 +165,7 @@ describe("FileService", function() {
             flush();
             expect(flag).toBe(fakeGetInfoResponse);
         });
-        
+
         it("should reject on server error", function() {
             $httpBackend.expect("GET", "RENDERED_URL/" + testFileId).respond(404);
             var flag = null;
@@ -174,9 +174,9 @@ describe("FileService", function() {
             }, function() {
                 flag = "rejected";
             });
-            
+
             flush();
-            
+
             expect(flag).toBe("rejected");
         });
     });
