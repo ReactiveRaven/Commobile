@@ -17,11 +17,10 @@ angular.module(
             FileService = {
                 ls: function(folder) {
                     var params = {};
+                    folder = folder || "/";
 
-                    if (folder) {
-                        params.firstKey = folder;
-                        params.lastKey = folder;
-                    }
+                    params.firstKey = folder;
+                    params.lastKey = folder;
 
                     return UrlService.render(API_HOST + URL_FILE).then(function(renderedUrl) {
                         return $http.get(

@@ -62,11 +62,19 @@ describe("FileService", function() {
             FileService.ls();
             expect(UrlService.render).toHaveBeenCalled();
         });
+        
+        it("should default to '/' if no folder given", function() {
+            var dirname = "/",
+                encodedDirname = encodeURIComponent(dirname),
+                renderedUrl = "RENDERED_URL",
+                fullUrl = "RENDERED_URL?firstKey=" + encodedDirname + "&lastKey=" + encodedDirname;
 
-        it("should pull from the server", function() {
-            $httpBackend.expectGET("RENDERED_URL").respond(resolved(fakeLsResponse));
+            $httpBackend.expect(
+                "GET",
+                fullUrl
+            ).respond(resolved(fakeLsResponse));
             FileService.ls();
-            $httpBackend.flush();
+            flush();            
         });
 
         it("should accept a folder name to send to the server", function() {
@@ -81,6 +89,19 @@ describe("FileService", function() {
             ).respond(resolved(fakeLsResponse));
             FileService.ls(dirname);
             flush();
+        });
+        
+        it("should reject on server error", function() {
+            var flag = null;
+
+            $httpBackend.expectGET("RENDERED_URL?firstKey=%2F&lastKey=%2F").respond(404);
+            FileService.ls().then(function() {
+                flag = "resolved";
+            }, function() {
+                flag = "rejected";
+            });
+            flush();
+            expect(flag).toBe("rejected");
         });
     });
 
@@ -137,7 +158,26 @@ describe("FileService", function() {
         });
 
         it("should resolve with the document information", function() {
-
+            var flag = null;
+            FileService.getInfo(testFileId).then(function(result) {
+                flag = result;
+            });
+            flush();
+            expect(flag).toBe(fakeGetInfoResponse);
+        });
+        
+        it("should reject on server error", function() {
+            $httpBackend.expect("GET", "RENDERED_URL/" + testFileId).respond(404);
+            var flag = null;
+            FileService.getInfo(testFileId).then(function() {
+                flag = "resolved";
+            }, function() {
+                flag = "rejected";
+            });
+            
+            flush();
+            
+            expect(flag).toBe("rejected");
         });
     });
 });
