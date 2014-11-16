@@ -9,8 +9,7 @@ exports.config = {
         // We are going to make this file in a minute
         "features/*.feature"
     ],
-    baseUrl: "http://localhost:8101",
-    seleniumAddress: "http://127.0.0.1:4444/wd/hub",
+    baseUrl: "http://localhost:8100",
     framework: "cucumber",
     cucumberOpts: {
         format: "pretty",
@@ -22,7 +21,7 @@ exports.config = {
         browser.get("/");
         require("protractor-http-mock").config = {
             rootDirectory: __dirname, // default value: process.cwd()
-            protractorConfig: "protractor.config" // default value: 'protractor.conf'
+            protractorConfig: "protractor.standalone.config" // default value: 'protractor.conf'
         };
     }
 };
