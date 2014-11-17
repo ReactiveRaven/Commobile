@@ -13,7 +13,19 @@ angular.module(
                 controller: "LoginCtrl"
             });
     })
-    .controller("LoginCtrl", function($scope, UserService) {
+    .controller("LoginCtrl", function($scope, UserService, $q, $state) {
         $scope.name = "LoginCtrl";
-        // empty
+        
+        $scope.login = function() {
+            UserService.login($scope.username, $scope.password)
+                .then(
+                    function(result) {
+                        $scope.loginFailed = false;
+                        $state.go("home");
+                    },
+                    function(reason) {
+                        $scope.loginFailed = true;
+                    }
+                );
+        };
     });

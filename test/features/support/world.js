@@ -2,7 +2,10 @@ module.exports = function() {
 
     this.World = function World(callback) {
         var glob = require("glob"),
+            mock = require('protractor-http-mock'),
             that = this;
+        
+        this.httpmock = mock;
 
         this.prop = "Hello from the World!"; // this property will be available in step definitions
 

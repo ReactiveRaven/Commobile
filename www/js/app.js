@@ -3,7 +3,8 @@ angular.module(
         [
             "ionic",
             "aa.commobile.constants",
-            "aa.commobile.controller.login"
+            "aa.commobile.controller.login",
+            "aa.commobile.controller.home"
         ]
     )
     .constant("API_HOST", "")

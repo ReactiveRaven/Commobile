@@ -1,5 +1,10 @@
 module.exports = function() {
     "use strict";
+    
+    this.After(function(callback) {
+        this.httpmock.teardown();
+        callback();
+    });
 
     this.Given(/^I am logged out$/, function(callback) {
         browser.get("/#/forcelogout").then(callback, callback.fail);
@@ -10,6 +15,20 @@ module.exports = function() {
     });
 
     this.When(/^I log in successfully$/, function(callback) {
+
+        this.httpmock([{
+            request: {
+                path: '/_session',
+                method: 'POST'
+            },
+            response: {
+                data: {
+                    userName: 'pro-mock',
+                    email: 'pro-mock@email.com'
+                }
+            }
+        }]);
+        
         this.LoginPage.login("testuser", "testpass").then(callback, callback.fail);
     });
 
@@ -27,9 +46,7 @@ module.exports = function() {
 
     this.Given(/^I am on the start page$/, function(callback) {
         // Write code here that turns the phrase above into concrete actions
-        browser.get("/").then(function() {
-            callback();
-        });
+        this.LoginPage.get().then(callback, callback.fail);
     });
 
     this.Then(/^I should see "([^"]*)"$/, function(arg1, callback) {
