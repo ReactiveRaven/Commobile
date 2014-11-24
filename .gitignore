@@ -7,3 +7,4 @@ plugins/
 www/lib/*
 .codio
 .settings
+test/screenshots
