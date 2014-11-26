@@ -8,7 +8,7 @@ then
 	kill `cat ionic_serve.pid`;
 	rm ionic_serve.pid;
 fi;
-node_modules/ionic/bin/ionic serve --nobrowser --nolivereload --port=8100 &
+node_modules/ionic/bin/ionic serve --nobrowser --nolivereload --port=8101 &
 echo $! > ionic_serve.pid;
 node_modules/protractor/bin/protractor test/protractor.config.js;
 isok=$?;

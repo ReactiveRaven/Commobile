@@ -22,11 +22,12 @@
     "phantomjs": "~1.9.12",
     "protractor": "~1.3.0",
     "protractor-http-mock": "https://github.com/AlliterativeAnimals/protractor-http-mock/tarball/0eaafa5dfc76a7bdffd96c39b06da7d02f4720aa",
-    "shelljs": "^0.3.0"
+    "shelljs": "^0.3.0",
+    "colors": "~1.0.3"
   },
   "scripts": {
-    "bower": "node_modules/bower/bin/bower install",
     "install": "npm run bower && npm run update-webdriver",
+    "bower": "node_modules/bower/bin/bower install",
     "update-webdriver": "node_modules/protractor/bin/webdriver-manager update",
     "pretest": "npm run serve-start && npm run selenium-start",
     "test": "{ npm run jshint && npm run jscs && npm run karma && npm run protractor-standalone; } 2>/dev/null",
@@ -40,7 +41,15 @@
     "serve-stop": "if [ -f ionic.pid ]; then kill `cat ionic.pid`; rm ionic.pid; fi;",
     "selenium-start": "node_modules/protractor/bin/webdriver-manager start >/dev/null 2>&1 & echo $! >> selenium.pid",
     "selenium-stop": "if [ -f selenium.pid ]; then kill `cat selenium.pid`; rm selenium.pid; fi;",
-    "protractor": "set -o pipefail && node_modules/protractor/bin/protractor test/protractor.config.js | grep -vE '  at .*(node_modules|\\(timers.js)'",
     "protractor-standalone": "set -o pipefail && node_modules/protractor/bin/protractor test/protractor.standalone.config.js | grep -vE '  at .*(node_modules|\\(timers.js)'"
+  },
+  "devDependencies": {
+    "grunt-protractor-runner": "~1.1.4",
+    "grunt-cli": "~0.1.13",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt": "~0.4.5",
+    "grunt-protractor-webdriver": "https://github.com/AlliterativeAnimals/grunt-protractor-webdriver/tarball/6241ccca78f119e9eb1c8fa27d0c1f2d9caa2127",
+    "load-grunt-tasks": "~1.0.0",
+    "grunt-shell": "~1.1.1"
   }
 }

@@ -3,16 +3,20 @@ Feature: Login
     I want to be able to log in to the app
     So I can access its delicious juices
 
-Scenario: Logged out people can log in
-    Given I am logged out
-    Then I should be prompted to log in
+    Scenario: Logged out people can log in
+        Given I am logged out
+        Then I should be prompted to log in
 
-Scenario: Log in
-    Given I am logged out
-    When I log in successfully
-    Then I should be sent to my homepage
+    Scenario: First arriving on the log in page
+        When I arrive on the login page
+        Then I should not see any warnings
 
-Scenario: Bad log in
-    Given I am logged out
-    When I log in incorrectly
-    Then I should be warned my log in details are bad
+    Scenario: Log in
+        Given I am logged out
+        When I log in successfully
+        Then I should be sent to my homepage
+
+    Scenario: Bad log in
+        Given I am logged out
+        When I log in incorrectly
+        Then I should be warned my log in details are bad

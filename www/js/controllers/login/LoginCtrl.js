@@ -15,8 +15,13 @@ angular.module(
     })
     .controller("LoginCtrl", function($scope, UserService, $q, $state) {
         $scope.name = "LoginCtrl";
+    
+        $scope.loginFailed = null;
         
         $scope.login = function() {
+            
+            $scope.loginState = null;
+            
             UserService.login($scope.username, $scope.password)
                 .then(
                     function(result) {

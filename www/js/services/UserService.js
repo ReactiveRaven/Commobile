@@ -16,8 +16,8 @@ angular.module("aa.commobile.service.user", [ "aa.commobile.constants" ])
                     }
                 }).success(function(data) {
                     deferred.resolve();
-                }).error(function() {
-                    deferred.reject();
+                }).error(function(reason) {
+                    deferred.reject(reason);
                 });
                 return deferred.promise;
             },

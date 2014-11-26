@@ -1,6 +1,9 @@
 <ion-view title="Log in" class="bar-subheader">
-    <span>Incorrect log in details</span>
+    <div class="bar bar-assertive warning" ng-if="loginFailed">
+        <span class="title">Incorrect log in details</span>
+    </div>
     <input type="text" id="username" />
     <input type="password" id="password" />
-    <button ng-click="login()">Log in</button>
+    <button class="button button-positive" ng-click="login()">Log in</button>
+    <pre>{{debug | json}}</pre>
 </ion-view>
