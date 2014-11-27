@@ -15,7 +15,14 @@ angular.module("aa.commobile.service.user", [ "aa.commobile.constants" ])
                         password: password
                     }
                 }).success(function(data) {
-                    deferred.resolve();
+                    if (
+                        typeof data === "object" &&
+                        typeof data.userCtx !== "undefined"
+                    ) {
+                        deferred.resolve();
+                    } else {
+                        deferred.reject();
+                    }
                 }).error(function(reason) {
                     deferred.reject(reason);
                 });

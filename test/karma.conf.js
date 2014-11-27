@@ -12,7 +12,8 @@ module.exports = function(config) {
       "lib/ng-modular-log/ngModularLog.js",
       "lib/ionic/js/ionic.js",
       "lib/ionic/js/ionic-angular.js",
-      "js/**/*.js"
+      "js/**/*.js",
+      "mocks/**/*.js"
     ],
 
     autoWatch: true,

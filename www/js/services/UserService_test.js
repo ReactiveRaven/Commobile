@@ -61,7 +61,7 @@ describe("UserService", function() {
     describe("login()", function() {
 
         beforeEach(function() {
-            $httpBackend.when("POST", API_HOST + URL_SESSION).respond(200);
+            $httpBackend.when("POST", API_HOST + URL_SESSION).respond(window.mocks.login.success);
         });
 
         afterEach(function() {
@@ -93,7 +93,7 @@ describe("UserService", function() {
                 $httpBackend.flush();
             });
 
-            it("should resolve the promise on server response", function() {
+            it("should resolve the promise on successful response", function() {
                 var result = UserService.login(),
                     flag = false;
                 UserService.login().then(function() {
@@ -106,11 +106,25 @@ describe("UserService", function() {
         });
 
         describe("Unsuccessful", function() {
-            beforeEach(function() {
-                $httpBackend.expectPOST(API_HOST + URL_SESSION).respond(401);
+            var failResponse;
+            
+            it("should reject on unsuccessful response", function() {
+                $httpBackend.expectPOST(API_HOST + URL_SESSION).respond(window.mocks.login.fail);
+                var flag = null;
+                
+                UserService.login().then(function() {
+                    flag = "resolved";
+                }, function() {
+                    flag = "rejected"; 
+                });
+                
+                $httpBackend.flush();
+                
+                expect(flag).toBe("rejected");
             });
 
             it("should reject promise on server error", function() {
+                $httpBackend.expectPOST(API_HOST + URL_SESSION).respond(401);
                 var flag = null;
                 UserService.login().then(function() {
                     flag = "resolved";
