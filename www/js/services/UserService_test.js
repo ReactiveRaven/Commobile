@@ -107,19 +107,19 @@ describe("UserService", function() {
 
         describe("Unsuccessful", function() {
             var failResponse;
-            
+
             it("should reject on unsuccessful response", function() {
                 $httpBackend.expectPOST(API_HOST + URL_SESSION).respond(window.mocks.login.fail);
                 var flag = null;
-                
+
                 UserService.login().then(function() {
                     flag = "resolved";
                 }, function() {
-                    flag = "rejected"; 
+                    flag = "rejected";
                 });
-                
+
                 $httpBackend.flush();
-                
+
                 expect(flag).toBe("rejected");
             });
 
