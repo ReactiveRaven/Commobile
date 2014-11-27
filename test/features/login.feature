@@ -1,3 +1,4 @@
+@active
 Feature: Login
     As a user
     I want to be able to log in to the app
@@ -15,7 +16,7 @@ Feature: Login
         Given I am logged out
         When I log in successfully
         Then I should be sent to my homepage
-    @active
+    
     Scenario: Bad log in
         Given I am logged out
         When I log in incorrectly
