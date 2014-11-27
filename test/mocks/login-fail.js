@@ -4,6 +4,6 @@ module.exports = {
         method: "POST"
     },
     response: {
-        data: require("../../www/mocks/login-success")
+        data: require("../../www/mocks/login-fail")
     }
 };
