@@ -35,13 +35,15 @@
     "jscs": "node_modules/jscs/bin/jscs www/js/**/*.js",
     "jshint": "node_modules/jshint/bin/jshint www/js/**/*.js",
     "karma": "node_modules/karma/bin/karma start test/karma.conf.js --single-run --no-color",
-    "watch-karma": "node_modules/karma/bin/karma start test/karma.conf.js",
     "test-nokarma": "{ npm run jshint && npm run jscs; } 2>/dev/null",
-    "serve-start": "node_modules/ionic/bin/ionic serve --nolivereload --nobrowser --nolivereload --port 8101 >/dev/null 2>&1 & echo $! >> ionic.pid",
+    "serve-start": "node_modules/ionic/bin/ionic serve --nolivereload --nobrowser --nolivereload --port 8100 >/dev/null 2>&1 & echo $! >> ionic.pid",
     "serve-stop": "if [ -f ionic.pid ]; then kill `cat ionic.pid`; rm ionic.pid; fi;",
     "selenium-start": "node_modules/protractor/bin/webdriver-manager start >/dev/null 2>&1 & echo $! >> selenium.pid",
     "selenium-stop": "if [ -f selenium.pid ]; then kill `cat selenium.pid`; rm selenium.pid; fi;",
-    "protractor-standalone": "set -o pipefail && node_modules/protractor/bin/protractor test/protractor.standalone.config.js | grep -vE '  at .*(node_modules|\\(timers.js)'"
+    "protractor-standalone": "node_modules/protractor/bin/protractor test/protractor.standalone.config.js",
+
+    "watch-karma": "node_modules/karma/bin/karma start test/karma.conf.js",
+    "watch-protractor": "node_modules/grunt-cli/bin/grunt start-protractor"
   },
   "devDependencies": {
     "grunt-protractor-runner": "~1.1.4",
