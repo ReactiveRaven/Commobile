@@ -40,7 +40,9 @@
     "serve-stop": "if [ -f ionic.pid ]; then kill `cat ionic.pid`; rm ionic.pid; fi;",
     "selenium-start": "node_modules/protractor/bin/webdriver-manager start >/dev/null 2>&1 & echo $! >> selenium.pid",
     "selenium-stop": "if [ -f selenium.pid ]; then kill `cat selenium.pid`; rm selenium.pid; fi;",
+    "preprotractor-standalone": "npm run serve-start && npm run selenium-start",
     "protractor-standalone": "node_modules/protractor/bin/protractor test/protractor.standalone.config.js",
+    "postprotractor-standalone": "npm run serve-stop && npm run selenium-stop",
 
     "watch-karma": "node_modules/karma/bin/karma start test/karma.conf.js",
     "watch-protractor": "node_modules/grunt-cli/bin/grunt start-protractor"
