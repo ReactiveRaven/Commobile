@@ -15,7 +15,7 @@ Feature: Login
         Given I am logged out
         When I log in successfully
         Then I should be sent to my homepage
-
+    @active
     Scenario: Bad log in
         Given I am logged out
         When I log in incorrectly

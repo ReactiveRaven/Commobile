@@ -24,9 +24,12 @@ module.exports = function() {
             });
 
         this.shouldContain = function(searchText, css) {
-            return element(by.css(css))
+            return element.all(by.css(css))
                 .getText()
                 .then(function(text) {
+                    if (Array.isArray(text)) {
+                        text = text.join("\n");
+                    }
                     if (text.indexOf(searchText) === -1) {
                         searchText = searchText.split("\n").join("\n  ");
                         text = text.split("\n").join("\n  ");
@@ -38,7 +41,7 @@ module.exports = function() {
                 });
         };
 
-        this.shouldBeOn = function(pageName, callback) {
+        this.shouldBeOn = function(pageName) {
             var pageInstance = this[pageName];
             return pageInstance.isOn()
                 .then(function(isOn) {
@@ -61,8 +64,8 @@ module.exports = function() {
                     filename || "LAST_FAIL"
                 ).then(function(outputFilename) {
                     callback.fail(
-                        message + "\n" + 
-                            (" - Saved screenshot of failed test '" + outputFilename + "'").grey
+                        message + "\n - Saved screenshot of failed test to '".cyan +
+                            outputFilename.cyan + "'".cyan
                     );
                 });
             };

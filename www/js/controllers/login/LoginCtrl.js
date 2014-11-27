@@ -26,7 +26,7 @@ angular.module(
                 .then(
                     function(result) {
                         $scope.loginFailed = false;
-                        $state.go("home");
+                        $state.go("tabs.home");
                     },
                     function(reason) {
                         $scope.loginFailed = true;

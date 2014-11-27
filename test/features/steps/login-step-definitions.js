@@ -31,8 +31,17 @@ module.exports = function() {
     });
 
     this.When(/^I log in incorrectly$/, function(callback) {
+        var self = this;
+        this.httpmock(["login-fail"]);
+        
         this.LoginPage
-            .login("baduser", "badpass")
+            .get()
+            .then(function() {
+                return self.shouldBeOn("LoginPage");
+            })
+            .then(function() {
+                return self.LoginPage.login("baduser", "badpass");
+            })
             .then(callback, this.fail(callback));
     });
 

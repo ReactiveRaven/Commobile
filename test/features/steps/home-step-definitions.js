@@ -2,19 +2,17 @@ module.exports = function() {
     "use strict";
     
     this.Given(/^I am on the homepage$/, function (callback) {
+        var self = this;
         this.HomePage
             .get()
+            .then(function() {
+                return self.shouldBeOn("HomePage");
+            })
             .then(callback, this.fail(callback));
     });
     
     this.Then(/^I should be able to browse all artists$/, function (callback) {
-        this.HomePage
-            .canBrowseArtists()
-            .then(function(canBrowse) {
-                if (!canBrowse) {
-                    throw "Expected to be able to browse artists";
-                }
-            })
+        this.shouldContain("Artists", ".tab-title")
             .then(callback, this.fail(callback));
     });
 

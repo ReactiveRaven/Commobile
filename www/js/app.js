@@ -3,6 +3,7 @@ angular.module(
         [
             "ionic",
             "aa.commobile.constants",
+            "aa.commobile.controller.tabs",
             "aa.commobile.controller.login",
             "aa.commobile.controller.home"
         ]
@@ -11,7 +12,7 @@ angular.module(
     .constant("URL_SESSION", "/_session")
     .config(function($urlRouterProvider) {
         // if none of the above states are matched, use this as the fallback
-        $urlRouterProvider.otherwise("/login");
+        $urlRouterProvider.otherwise("/home");
     })
     .run(function($ionicPlatform) {
         $ionicPlatform.ready(function() {

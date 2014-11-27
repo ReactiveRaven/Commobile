@@ -2,7 +2,7 @@ Feature: Homepage tasks
     As a logged in user
     I want to have common tasks on my homepage
     So I can check up on things quickly
-    @active
+
     Scenario: Browsing artists
         Given I am on the homepage
         Then I should be able to browse all artists
