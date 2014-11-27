@@ -9,3 +9,5 @@ www/lib/*
 .settings
 test/screenshots
 phantomjsdriver.log
+ionic.pid
+selenium.pid
