@@ -8,3 +8,4 @@ www/lib/*
 .codio
 .settings
 test/screenshots
+phantomjsdriver.log
