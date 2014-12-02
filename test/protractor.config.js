@@ -20,8 +20,8 @@ exports.config = {
         "use strict";
         browser.get("/");
         require("protractor-http-mock").config = {
-            rootDirectory: __dirname, // default value: process.cwd()
-            protractorConfig: "protractor.config" // default value: 'protractor.conf'
+            rootDirectory: __dirname + "/../www", // default value: process.cwd()
+            protractorConfig: "/../test/protractor.config" // default value: 'protractor.conf'
         };
     }
 };

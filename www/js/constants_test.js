@@ -20,4 +20,10 @@ describe("aa.commobile.constants", function() {
             expect(typeof URL_FILE).toBe("string");
         }));
     });
+
+    describe("URL_ARTIST_LIST", function() {
+        it("should be a string", inject(function(URL_ARTIST_LIST) {
+            expect(typeof URL_ARTIST_LIST).toBe("string");
+        }));
+    });
 });

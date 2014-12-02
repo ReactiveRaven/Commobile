@@ -14,9 +14,9 @@ module.exports = function() {
     this.When(/^I log in successfully$/, function(callback) {
 
         this.httpmock(["login-success"]);
-        
+
         var self = this;
-        
+
         this.LoginPage
             .get()
             .then(function() {
@@ -33,7 +33,7 @@ module.exports = function() {
     this.When(/^I log in incorrectly$/, function(callback) {
         var self = this;
         this.httpmock(["login-fail"]);
-        
+
         this.LoginPage
             .get()
             .then(function() {
@@ -66,13 +66,13 @@ module.exports = function() {
             })
             .then(callback, this.fail(callback));
     });
-    
+
     this.When(/^I arrive on the login page$/, function(callback) {
         this.LoginPage
             .get()
             .then(callback, this.fail(callback));
     });
-    
+
     this.Then(/^I should not see any warnings$/, function (callback) {
         element(by.css(".warning"))
             .isPresent()

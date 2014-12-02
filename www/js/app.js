@@ -1,13 +1,14 @@
 angular.module(
-        "aa.commobile",
-        [
-            "ionic",
-            "aa.commobile.constants",
-            "aa.commobile.controller.tabs",
-            "aa.commobile.controller.login",
-            "aa.commobile.controller.home"
-        ]
-    )
+    "aa.commobile",
+    [
+        "ionic",
+        "aa.commobile.constants",
+        "aa.commobile.controller.tabs",
+        "aa.commobile.controller.login",
+        "aa.commobile.controller.home",
+        "aa.commobile.controller.artists"
+    ]
+)
     .constant("API_HOST", "")
     .constant("URL_SESSION", "/_session")
     .config(function($urlRouterProvider) {

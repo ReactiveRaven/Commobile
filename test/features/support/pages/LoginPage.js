@@ -4,7 +4,7 @@ var BasePage = require("./BasePage"),
         var usernameElem = element(by.id("username")),
             passwordElem = element(by.id("password")),
             submitElem = element(by.css("button"));
-        
+
         this.getUsername = function() {
             return usernameElem.getAttribute("value");
         };

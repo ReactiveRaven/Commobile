@@ -8,6 +8,7 @@ module.exports = function(grunt) {
                 files: [
                     "www/**/*.html",
                     "www/js/**/*.js",
+                    "www/mocks/**/*.js",
                     "test/features/**/*.js",
                     "test/protractor.*.js"
                 ],
@@ -48,6 +49,6 @@ module.exports = function(grunt) {
             },
         },
     });
-    
+
     grunt.registerTask("start-protractor", ["protractor_webdriver", "watch:protractor"]);
 };
